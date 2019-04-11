@@ -36,12 +36,22 @@ def measure_search_time(search_alg, sz, repeats):
 
 
 def main():
+    algorithms = {
+        'linear_search': linear_search,
+        'binary_search': binary_search
+    }
+
     sizes = []
-    avg_time = []
+    avg_time = {alg: [] for alg in algorithms}
     for sz in tqdm(range(10, 50000, 1000)):
         sizes.append(sz)
-        avg_time.append(measure_search_time(linear_search, sz, 500))
-    plt.plot(sizes, avg_time)
+        for alg_name, f in algorithms.items():
+            avg_time[alg_name].append(measure_search_time(f, sz, 500))
+    
+    for alg_name in algorithms:
+        plt.plot(sizes, avg_time[alg_name], label=alg_name)
+    #plt.plot(sizes, avg_time)
+    plt.legend()
     plt.show()
 
 
